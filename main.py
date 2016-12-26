@@ -6,6 +6,7 @@ from collections import Counter
 import os
 import math
 import re
+import copy
 
 
 def multiple_replace(text, adict):
@@ -46,7 +47,7 @@ def get_TF_list(path):
     return res_list
 
 '''
-    返回所给词在文本库中的出现次数
+    返回所给词在文本库中包含这个词的文档个数
 '''
 def get_count_files(word, fileList):
     count = 0
@@ -99,11 +100,11 @@ def main():
     IDF_all_list = get_IDF_list(TF_all_list)
     TF_IDF_list = get_TF_IDF(TF_all_list, IDF_all_list)
 
-    index_list = get_top_10(TF_IDF_list)
+    index_list = get_top_10(copy.deepcopy(TF_IDF_list))
     for x in xrange(len(TF_all_list)):
         print '-----------第 ' + str(x+1) + ' 篇文章的特征词：----------------'
         for y in index_list[x]:
-            print TF_all_list[x][y][0], TF_all_list[x][y][1]
+            print TF_all_list[x][y][0], TF_IDF_list[x][y]
 
 
 if __name__ == "__main__":
